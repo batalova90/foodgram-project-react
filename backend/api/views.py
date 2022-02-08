@@ -1,27 +1,26 @@
-from django.shortcuts import get_object_or_404
-from django.http import Http404
-from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import filters, status
-from rest_framework.response import Response
-from rest_framework.decorators import action
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.pagination import LimitOffsetPagination
-from recipes.models import Tag, Ingredient, Recipe, ShoppingCart, Favorites
-from .serializers import (TagSerializer, IngredientSerializer,
-                          GetRecipeSerializer, CreateRecipeSerializer,
-                          ShoppingCartSerializer, FavoritesSerializer,
-                          Number_of_Ingredients)
-from .filters import RecipeFilter
-from rest_framework import viewsets
-from .permissions import IsAuthorOrReadOnly
-from django.http import FileResponse
 import io
-from reportlab.pdfgen import canvas
+
+from django.db.models import Sum
+from django.http import FileResponse, Http404
+from django.shortcuts import get_object_or_404
+from django_filters.rest_framework import DjangoFilterBackend
 from reportlab.lib.units import inch
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
+from reportlab.pdfgen import canvas
+from rest_framework import filters, status, viewsets
+from rest_framework.decorators import action
+from rest_framework.pagination import LimitOffsetPagination
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
 
-from django.db.models import Sum
+from recipes.models import Favorites, Ingredient, Recipe, ShoppingCart, Tag
+from .filters import RecipeFilter
+from .permissions import IsAuthorOrReadOnly
+from .serializers import (CreateRecipeSerializer, FavoritesSerializer,
+                          GetRecipeSerializer, IngredientSerializer,
+                          Number_of_Ingredients, ShoppingCartSerializer,
+                          TagSerializer)
 
 
 class TagViewSet(viewsets.ReadOnlyModelViewSet):

@@ -1,10 +1,11 @@
-from rest_framework import serializers
-from .models import User, Follow
 from djoser.serializers import (
-        UserCreateSerializer as DjoserUserCreateSerializer,
-        UserSerializer as DjoserUserSerializer
-)
+        UserCreateSerializer as DjoserUserCreateSerializer)
+from djoser.serializers import (
+        UserSerializer as DjoserUserSerializer)
+from rest_framework import serializers
+
 from recipes.models import Recipe
+from .models import Follow, User
 
 
 class UserSerializer(DjoserUserSerializer):

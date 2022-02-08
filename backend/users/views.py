@@ -1,14 +1,14 @@
 from django.shortcuts import get_object_or_404
 from djoser.views import UserViewSet as DjoserUserViewSet
 from rest_framework import status
-from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
-from .serializers import (UserSerializer,
-                          SubscriptionsSerializer,
-                          CreateFollowSerializer)
-from .models import User, Follow
+from rest_framework.response import Response
+
 from api.paginations import CustomPageNumberPaginator
+from .models import Follow, User
+from .serializers import (CreateFollowSerializer, SubscriptionsSerializer,
+                          UserSerializer)
 
 
 class UserViewSet(DjoserUserViewSet):
