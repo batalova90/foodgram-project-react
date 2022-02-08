@@ -1,3 +1,4 @@
+from django.shortcuts import get_object_or_404
 from djoser.serializers import (
         UserCreateSerializer as DjoserUserCreateSerializer)
 from djoser.serializers import (
@@ -6,6 +7,13 @@ from rest_framework import serializers
 
 from recipes.models import Recipe
 from .models import Follow, User
+
+
+class RecipeShoppingCartSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Recipe
+        fields = ('id', 'name', 'image', 'cooking_time')
 
 
 class UserSerializer(DjoserUserSerializer):
@@ -41,7 +49,6 @@ class UserCreateSerializer(DjoserUserCreateSerializer):
             'username',
             'email',
             'password'
-
         )
 
 
@@ -54,7 +61,6 @@ class SubscriptionsSerializer(UserSerializer):
         fields = UserSerializer.Meta.fields + ('recipes', 'recipes_count')
 
     def get_recipes(self, following):
-        from api.serializers import RecipeShoppingCartSerializer
         request = self.context['request']
         limit = request.query_params.get('recipes_limit')
         qs = (following.recipes.all()[:int(limit)]
@@ -100,8 +106,8 @@ class CreateFollowSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         request = self.context.get('request')
-        instance_user = User.objects.get(username=instance)
-        print(request.user)
+        instance_user = get_object_or_404(User,
+                                          username=instance)
         return ShowFollowSerializer(instance_user,
                                     context={'request': request}).data
 
@@ -116,7 +122,6 @@ class ShowFollowSerializer(serializers.ModelSerializer):
         fields = UserSerializer.Meta.fields + ('recipes', 'recipe_count')
 
     def get_recipes(self, obj):
-        from api.serializers import RecipeShoppingCartSerializer
         recipes = Recipe.objects.filter(author=obj)
         return RecipeShoppingCartSerializer(recipes, many=True).data
 

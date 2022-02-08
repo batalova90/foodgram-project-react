@@ -3,7 +3,7 @@ from drf_extra_fields.fields import Base64ImageField
 from rest_framework import serializers
 from rest_framework.exceptions import MethodNotAllowed
 
-from recipes.models import (Favorites, Ingredient, Number_of_Ingredients,
+from recipes.models import (Favorites, Ingredient, NumberOfIngredients,
                             Recipe, ShoppingCart, Tag)
 from users.serializers import UserSerializer
 
@@ -46,9 +46,9 @@ class GetRecipeSerializer(serializers.ModelSerializer):
         )
 
     def get_ingredients(self, obj):
-        ingredients = Number_of_Ingredients.objects.filter(recipe=obj)
-        return Number_of_IngredientSerializer(ingredients,
-                                              many=True).data
+        ingredients = NumberOfIngredients.objects.filter(recipe=obj)
+        return NumberOfIngredientSerializer(ingredients,
+                                            many=True).data
 
     def get_is_favorited(self, obj):
         request = self.context.get('request')
@@ -65,7 +65,7 @@ class GetRecipeSerializer(serializers.ModelSerializer):
                                            recipe=obj).exists()
 
 
-class Number_of_IngredientSerializer(serializers.ModelSerializer):
+class NumberOfIngredientSerializer(serializers.ModelSerializer):
     id = serializers.ReadOnlyField(source='ingredient.id')
     name = serializers.ReadOnlyField(source='ingredient.name')
     measurement_unit = serializers.ReadOnlyField(
@@ -73,7 +73,7 @@ class Number_of_IngredientSerializer(serializers.ModelSerializer):
     )
 
     class Meta:
-        model = Number_of_Ingredients
+        model = NumberOfIngredients
         fields = ('id', 'name', 'measurement_unit', 'amount')
 
 
@@ -84,7 +84,7 @@ class CreateIngredientSerializer(serializers.ModelSerializer):
     amount = serializers.IntegerField()
 
     class Meta:
-        model = Number_of_Ingredients
+        model = NumberOfIngredients
         fields = ('id', 'amount')
 
 
@@ -158,7 +158,7 @@ class CreateRecipeSerializer(serializers.ModelSerializer):
             ingredient_id = ingredient['id']
             amount = ingredient['amount']
             ingredient = Ingredient.objects.get(id=ingredient_id)
-            Number_of_Ingredients.objects.create(
+            NumberOfIngredients.objects.create(
                 recipe=recipe,
                 ingredient=ingredient,
                 amount=amount
@@ -196,7 +196,7 @@ class CreateRecipeSerializer(serializers.ModelSerializer):
         instance.tags.clear()
         tags = validated_data.get('tags')
         self.create_tags(tags, instance)
-        Number_of_Ingredients.objects.filter(recipe=instance).all().delete()
+        NumberOfIngredients.objects.filter(recipe=instance).all().delete()
         ingredients = validated_data.get('ingredients')
         self.create_ingredients(ingredients, instance)
         instance.save()

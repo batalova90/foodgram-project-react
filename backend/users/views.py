@@ -24,7 +24,8 @@ class UserViewSet(DjoserUserViewSet):
     @action(detail=True,
             permission_classes=[IsAuthenticated])
     def subscriptions(self, request):
-        follower = list(Follow.objects.filter(user=request.user))
+        follower = Follow.objects.values_list(
+            'author__username').filter(user=request.user)
         queryset = User.objects.filter(username__in=follower)
         pages = self.paginate_queryset(queryset)
         context = {'request': request}

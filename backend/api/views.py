@@ -19,7 +19,7 @@ from .filters import RecipeFilter
 from .permissions import IsAuthorOrReadOnly
 from .serializers import (CreateRecipeSerializer, FavoritesSerializer,
                           GetRecipeSerializer, IngredientSerializer,
-                          Number_of_Ingredients, ShoppingCartSerializer,
+                          NumberOfIngredients, ShoppingCartSerializer,
                           TagSerializer)
 
 
@@ -76,7 +76,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, permission_classes=[IsAuthenticated])
     def download_shopping_cart(self, request):
-        ingredients = Number_of_Ingredients.objects.filter(
+        ingredients = NumberOfIngredients.objects.filter(
             recipe__shopping_cart__user=request.user
         ).values(
             'ingredient__name',

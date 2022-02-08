@@ -1,6 +1,11 @@
 from django.contrib import admin
 
-from .models import Favorites, Ingredient, Recipe, ShoppingCart, Tag
+from .models import (Favorites,
+                     Ingredient,
+                     Recipe,
+                     IngredientRecipe,
+                     ShoppingCart,
+                     Tag)
 
 
 class TagAdmin(admin.ModelAdmin):
@@ -17,10 +22,14 @@ class IngredientAdmin(admin.ModelAdmin):
     empty_value_display = '-empty-'
 
 
+class IngredientRecipeAdmin(admin.ModelAdmin):
+    list_display = ('pk', 'recipe', 'ingredient')
+
+
 class RecipeAdmin(admin.ModelAdmin):
     list_display = ('pk', 'author', 'name', 'favorited_count')
     search_fields = ('name', )
-    list_filter = ('author', 'name')
+    list_filter = ('author', 'name', 'tags')
     empty_value_display = '-empty-'
     readonly_fields = ['favorited_count']
 
@@ -47,3 +56,4 @@ admin.site.register(Ingredient, IngredientAdmin)
 admin.site.register(Recipe, RecipeAdmin)
 admin.site.register(Favorites, FavoritesAdmin)
 admin.site.register(ShoppingCart, ShoppingCartAdmin)
+admin.site.register(IngredientRecipe, IngredientRecipeAdmin)
