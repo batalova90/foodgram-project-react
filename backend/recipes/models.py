@@ -1,6 +1,7 @@
 from colorfield.fields import ColorField
 from django.contrib.auth import get_user_model
 from django.db import models
+from django.core.validators import MinValueValidator
 
 User = get_user_model()
 
@@ -73,6 +74,7 @@ class Recipe(models.Model):
         verbose_name='Тэги',
         related_name='recipes')
     cooking_time = models.PositiveIntegerField(
+            validators=[MinValueValidator(1), ],
             verbose_name='Время приготовления'
     )
 

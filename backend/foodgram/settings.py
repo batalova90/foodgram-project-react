@@ -75,8 +75,6 @@ REST_FRAMEWORK = {
 }
 
 AUTH_USER_MODEL = 'users.User'
-# ACCOUNT_AUTHENTICATION_METHOD = 'email'
-# ACCOUNT_EMAIL_REQUIRED = True
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=4),
@@ -113,7 +111,6 @@ DJOSER = {
         'user_create': 'users.serializers.UserCreateSerializer',
     },
     'SEND_ACTIVATION_EMAIL': False,
-    # 'PASSWORD_RESET_CONFIRM_URL': 'api/users/set_password',
     'PERMISSIONS': {
         'activation': ['rest_farmework.permisiions.AllowAny', ],
         'token_create': ['rest_framework.permissions.AllowAny', ],
