@@ -81,7 +81,6 @@ SIMPLE_JWT = {
     'AUTH_HEADER_TYPES': ('Bearer',),
 }
 
-"""
 DATABASES = {
     'default': {
         'ENGINE': os.getenv(
@@ -95,6 +94,7 @@ DATABASES = {
         'PORT': os.getenv('DB_PORT')
     }
 }
+
 """
 DATABASES = {
     'default': {
@@ -102,6 +102,7 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
+"""
 
 DJOSER = {
     'HIDE_USERS': False,
@@ -151,3 +152,7 @@ USE_L10N = True
 USE_TZ = True
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+MEDIA_URL = "/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
