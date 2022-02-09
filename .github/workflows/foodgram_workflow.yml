@@ -19,7 +19,7 @@ jobs:
            pip install -r ./backend/requirements.txt
       - name: Test with flake8
         run:
-           flake8 ./backend/ --exclude ./backend/api/migrations/, ./backend/foodgram/settings.py
+           flake8 ./backend/ --exclude ./backend/users/migrations/, ./backend/foodgram/settings.py, ./backend/recipes/migrations/ 
    
    build_and_push_to_docker_hub:
       name: Push Docker image to Docker Hub
