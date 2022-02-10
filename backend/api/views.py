@@ -92,9 +92,9 @@ class RecipeViewSet(viewsets.ModelViewSet):
         textob.setFont("DejaVuSans", 14)
         line_buf = ''
         for line in ingredients:
-            line_buf = (line['ingredient__name'] +
-                        ', ' + line['ingredient__measurement_unit'] +
-                        ': ' + str(line['amount__sum']))
+            line_buf = (line['ingredient__name']
+                        + ', ' + line['ingredient__measurement_unit']
+                        + ': ' + str(line['amount__sum']))
             textob.textLine(line_buf)
         c.drawText(textob)
         c.showPage()
