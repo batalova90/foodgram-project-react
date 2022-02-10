@@ -1,8 +1,8 @@
 from django.shortcuts import get_object_or_404
 from djoser.serializers import (UserCreateSerializer as
-        DjoserUserCreateSerializer)
+                                DjoserUserCreateSerializer)
 from djoser.serializers import (UserSerializer as
-        DjoserUserSerializer)
+                                DjoserUserSerializer)
 from rest_framework import serializers
 
 from recipes.models import Recipe
