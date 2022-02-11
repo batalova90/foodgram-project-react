@@ -12,7 +12,7 @@ services:
     image: batalova/foodgram:v1.02.2022
     restart: always
     volumes:
-      - static_value:/app/static/
+      - static_value:/app/static_backend/
       - media_value:/app/media/
     depends_on:
       - db
