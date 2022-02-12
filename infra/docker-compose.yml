@@ -12,8 +12,8 @@ services:
     image: batalova/foodgram:v1.02.2022
     restart: always
     volumes:
-      - static_value:/app/static_backend/
-      - media_value:/app/media/
+      - static_value:/code/static_backend/
+      - media_value:/code/media/
     depends_on:
       - db
     env_file:
@@ -24,7 +24,7 @@ services:
     volumes:
       - ../frontend/:/app/result_build/
     depends_on:
-      - db
+      - backend
 
   nginx:
     image: nginx:1.19.3
@@ -36,10 +36,11 @@ services:
       - ../docs/:/usr/share/nginx/html/api/docs/
       - ../docs/redoc.html:/usr/share/nginx/html/api/docs/redoc.html
       - ../docs/openapi-schema.yml:/usr/share/nginx/html/api/docs/openapi-schema.yml
-      - static_value:/var/html/static/
+      - static_value:/var/html/static_backend/
       - media_value:/var/html/media/
+    restart: always
     depends_on:
-      - backend
+      - frontend
 
 volumes:
    postgres_data:
