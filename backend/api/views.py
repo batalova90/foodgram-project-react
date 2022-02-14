@@ -106,12 +106,14 @@ class RecipeViewSet(viewsets.ModelViewSet):
         filename = f'shopping_cart {request.user}.pdf'
         return FileResponse(buf, as_attachment=True, filename=filename)
 
-    @action(methods=['get', ],
+    @action(methods=['get',],
             detail=True,
             permission_classes=[IsAuthenticated])
-    def favorite(self, request, pk):
-        data = {'user': request.user.id,
-                'recipe': pk}
+    def favorite(self, request, pk=None):
+        user = get_object_or_404(User, id=request.user.id)
+        recipe = get_object_or_404(Recipe, id=pk)
+        data = {'user': user.id,
+                'recipe': recipe.id}
         serializer = FavoritesSerializer(
             data=data, context={'request': request}
         )
