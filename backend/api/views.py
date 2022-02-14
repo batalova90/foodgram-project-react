@@ -14,6 +14,7 @@ from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
+from users.models import User
 from recipes.models import Favorites, Ingredient, Recipe, ShoppingCart, Tag
 from .filters import RecipeFilter
 from .permissions import IsAuthorOrReadOnly
@@ -106,7 +107,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
         filename = f'shopping_cart {request.user}.pdf'
         return FileResponse(buf, as_attachment=True, filename=filename)
 
-    @action(methods=['get',],
+    @action(methods=['get', ],
             detail=True,
             permission_classes=[IsAuthenticated])
     def favorite(self, request, pk=None):
