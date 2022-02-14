@@ -1,6 +1,6 @@
 import io
 
-from django.db.models import Sum
+from django.db.models import Sum, Exists, OuterRef
 from django.http import FileResponse, Http404
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
@@ -55,7 +55,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
         if user.is_anonymous:
             return Recipe.objects.all()
         queryset = Recipe.objects.annotate(
-            is_favorited=Exists(Favorite.objects.filter(
+            is_favorited=Exists(Favorites.objects.filter(
                 user=user, recipe_id=OuterRef('pk'))),
             is_in_shopping_cart=Exists(ShoppingCart.objects.filter(
                 user=user, recipe_id=OuterRef('pk'))))
