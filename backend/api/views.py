@@ -49,14 +49,17 @@ class RecipeViewSet(viewsets.ModelViewSet):
             return GetRecipeSerializer
         return CreateRecipeSerializer
 
-    @action(methods=['post', ],
+    @action(methods=['post', 'get'],
             detail=True,
             permission_classes=[IsAuthenticated])
-    def shopping_cart(self, request, pk):
-        data = {'user': request.user.id, 'recipe': pk}
+    def shopping_cart(self, request, pk=None):
+        user = get_object_or_404(User, pk=request.user.id)
+        recipe = get_object_or_404(Recipe, pk=pk)
+        data = {'user': user.id, 'recipe': recipe.id}
         serializer = ShoppingCartSerializer(
             data=data, context={'request': request}
         )
+        # !!!method = get
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
