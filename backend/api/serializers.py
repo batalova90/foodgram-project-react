@@ -246,7 +246,7 @@ class ShoppingCartSerializer(serializers.ModelSerializer):
             return False
         recipe = data['recipe']
         if ShoppingCart.objects.filter(user=request.user,
-                                       recipe=recipe).exists():
+                                       recipe__id=recipe.id).exists():
             raise serializers.ValidationError({
                 'status': 'Рецепт уже добавлен!'
             })

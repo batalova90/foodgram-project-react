@@ -106,7 +106,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
         filename = f'shopping_cart {request.user}.pdf'
         return FileResponse(buf, as_attachment=True, filename=filename)
 
-    @action(methods=['post', ],
+    @action(methods=['get', ],
             detail=True,
             permission_classes=[IsAuthenticated])
     def favorite(self, request, pk):
