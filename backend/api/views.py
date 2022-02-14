@@ -61,7 +61,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
                 user=user, recipe_id=OuterRef('pk'))))
         if self.request.GET.get('is_favorited'):
             return queryset.filter(is_favorited=True)
-        if self.request.GET.get('is_in_shopping_cart'):
+        elif self.request.GET.get('is_in_shopping_cart'):
             return queryset.filter(is_in_shopping_cart=True)
         return queryset
 
