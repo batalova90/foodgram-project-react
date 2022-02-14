@@ -92,8 +92,8 @@ class CreateFollowSerializer(serializers.ModelSerializer):
         fields = ('user', 'author')
 
     def validate(self, data):
-        user = data['user']
-        following = data['author']
+        user = data['user'].id
+        following = data['author'].id
         if user == following:
             raise serializers.ValidationError(
                     'На самого себя нельзя подписываться!')
