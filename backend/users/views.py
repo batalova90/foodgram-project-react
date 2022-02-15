@@ -36,7 +36,7 @@ class UserViewSet(DjoserUserViewSet):
 
     @action(detail=False, methods=['get', 'delete'],
             permission_classes=[IsAuthenticated])
-    def subscribe(self, request, pk):
+    def subscribe(self, request, pk=None):
         following = get_object_or_404(User, pk=pk)
         follower = request.user
         data = {'user': follower,
