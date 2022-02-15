@@ -101,21 +101,24 @@ class CreateRecipeSerializer(serializers.ModelSerializer):
             'id', 'author', 'ingredients', 'tags',
             'image', 'name', 'text', 'cooking_time'
         )
-
-    def validate_image(self, image):
+    
+    def validate_image(self, data):
+        ingredients = data['ingredients']
+        cooking_time = data['cooking_time']
+        image = data['image']
+        tags = data['tags']
         MAX_IMAGE_SIZE = 12000000
+        
         if image.size > MAX_IMAGE_SIZE:
             raise serializers.ValidationError({
                 'image': 'Слишком большой размер файла!',
             })
-        return image
-
-    def validate_ingredients(self, ingredients):
-        ingredients = self.initial_data.get('ingredients')
+        
         if not ingredients:
             raise serializers.ValidationError({
                 'ingredients': 'Выберите как минимум один ингредиент!',
             })
+        
         ingredient_list = []
         for ingredient in ingredients:
             ingredient_id = ingredient['id']
@@ -129,29 +132,22 @@ class CreateRecipeSerializer(serializers.ModelSerializer):
                 raise serializers.ValidationError({
                     'amount': 'Введите необходимое кол-во ингредиента!',
                 })
-        return ingredients
-
-    def validate_tags(self, tag):
-        tags = self.initial_data.get('tags')
         if not tags:
             raise serializers.ValidationError({
                 'tags': 'Добавьте как минимум один тэг',
             })
         tags_list = []
-        for tag in tags:
-            if tag in tags_list:
+        for tag_temp in tags:
+            if tag_temp in tags_list:
                 raise serializers.ValidationError({
                     'tags': 'Тэг уже был добавлен!'
                 })
-            tags_list.append(tag)
-        return tags_list
-
-    def validate_cooking_time(self, cooking_time):
+            tags_list.append(tag_temp)
         if int(cooking_time) <= 0:
             raise serializers.ValidationError({
                 'cooking_time': 'Введите время приготовление отличное от нуля!'
             })
-        return cooking_time
+        return data
 
     def create_ingredients(self, ingredients, recipe):
         for ingredient in ingredients:
