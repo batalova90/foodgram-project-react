@@ -13,14 +13,9 @@ class Tag(models.Model):
         verbose_name='Наименование'
     )
     color = ColorField(
+        blank=True,
         null=True,
-        default='#FF0000',
-        format='hexa',
         verbose_name='Цвет'
-    )
-    colors = ColorField(
-        null=True,
-        verbose_name='Color'
     )
     slug = models.SlugField(unique=True,
                             verbose_name='Slug')

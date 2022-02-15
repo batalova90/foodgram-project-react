@@ -9,7 +9,7 @@ from .models import (Favorites,
 
 
 class TagAdmin(admin.ModelAdmin):
-    list_display = ('pk', 'name', 'color', 'slug', 'colors')
+    list_display = ('pk', 'name', 'color', 'slug')
     search_fields = ('slug', )
     list_filter = ('slug', )
     empty_value_display = '-empty-'
