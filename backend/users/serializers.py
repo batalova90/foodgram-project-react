@@ -122,14 +122,14 @@ class ShowFollowSerializer(serializers.ModelSerializer):
         fields = UserSerializer.Meta.fields + ('recipes', 'recipe_count')
 
     def get_recipes(self, obj):
-        recipes = Recipe.objects.filter(author=obj)
+        recipes = Recipe.objects.filter(author__id=obj)
         return RecipeShoppingCartSerializer(recipes, many=True).data
 
     def get_recipe_count(self, obj):
-        queryset = Recipe.objects.filter(author=obj)
+        queryset = Recipe.objects.filter(author__id=obj)
         return queryset.count()
 
     def get_is_subscribed(self, obj):
         user = self.context['request'].user
-        return Follow.objects.filter(author=obj,
-                                     user=user).exists()
+        return Follow.objects.filter(author__id=obj,
+                                     user__id=user).exists()
