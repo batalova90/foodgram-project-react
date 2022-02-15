@@ -95,13 +95,15 @@ class CreateFollowSerializer(serializers.ModelSerializer):
         user = data['user'].id
         following = data['author'].id
         if user == following:
-            raise serializers.ValidationError(
-                    'На самого себя нельзя подписываться!')
+            raise serializers.ValidationError({
+                    'user': 'На самого себя нельзя подписываться!'
+            })
         if Follow.objects.filter(
                 author__id=following,
                 user__id=user).exists():
-            raise serializers.ValidationError(
-                    'Вы уже подписаны на этого автора!')
+            raise serializers.ValidationError({
+                    'user': 'Вы уже подписаны на этого автора!'
+            })
         return data
 
     def to_representation(self, instance):
