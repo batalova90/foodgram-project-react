@@ -92,8 +92,8 @@ class CreateFollowSerializer(serializers.ModelSerializer):
         fields = ('user', 'author')
 
     def validate(self, data):
-        user = data['user'].id
-        following = data['author'].id
+        user = data['user']
+        following = data['author']
         if user == following:
             raise serializers.ValidationError(
                     'На самого себя нельзя подписываться!')
@@ -107,7 +107,7 @@ class CreateFollowSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         request = self.context.get('request')
         instance_user = get_object_or_404(User,
-                                          username=instance)
+                                          pk=instance).id
         return ShowFollowSerializer(instance_user,
                                     context={'request': request}).data
 

@@ -39,8 +39,8 @@ class UserViewSet(DjoserUserViewSet):
     def subscribe(self, request, pk=None):
         following = get_object_or_404(User, pk=pk)
         follower = request.user
-        data = {'user': follower,
-                'author': following}
+        data = {'user': follower.id,
+                'author': following.id}
         context = {'request': request}
         serializer = CreateFollowSerializer(data=data,
                                             context=context)
