@@ -107,7 +107,7 @@ class CreateFollowSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         request = self.context.get('request')
         instance_user = get_object_or_404(User,
-                                          pk=instance)
+                                          username=instance)
         return ShowFollowSerializer(instance_user,
                                     context={'request': request}).data
 
