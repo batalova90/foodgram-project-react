@@ -145,7 +145,7 @@ class CreateRecipeSerializer(serializers.ModelSerializer):
                 'cooking_time': 'Введите время приготовление отличное от нуля!'
             })
         return data
-    
+
     def create_ingredients(self, ingredients, recipe):
         for ingredient in ingredients:
             ingredient_id = ingredient['id']
