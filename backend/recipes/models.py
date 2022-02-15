@@ -18,6 +18,10 @@ class Tag(models.Model):
         format='hexa',
         verbose_name='Цвет'
     )
+    colors = ColorField(
+        null=True,
+        verbose_name='Color'
+    )
     slug = models.SlugField(unique=True,
                             verbose_name='Slug')
 
