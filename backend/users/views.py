@@ -34,7 +34,7 @@ class UserViewSet(DjoserUserViewSet):
                                              context=context)
         return self.get_paginated_response(serializer.data)
 
-    @action(detail=False, methods=['get', 'delete'],
+    @action(detail=False, methods=['post', 'delete'],
             permission_classes=[IsAuthenticated])
     def subscribe(self, request, pk=None):
         following = get_object_or_404(User, pk=pk)
@@ -44,7 +44,7 @@ class UserViewSet(DjoserUserViewSet):
         context = {'request': request}
         serializer = CreateFollowSerializer(data=data,
                                             context=context)
-        if request.method == 'GET':
+        if request.method == 'POST':
             serializer.is_valid(raise_exception=True)
             serializer.save()
             return Response(serializer.data,
