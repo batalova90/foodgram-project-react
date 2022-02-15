@@ -44,7 +44,7 @@ class UserViewSet(DjoserUserViewSet):
         context = {'request': request}
         serializer = CreateFollowSerializer(data=data,
                                             context=context)
-        if request.method == 'POST':
+        if request.method == 'GET':
             serializer.is_valid(raise_exception=True)
             serializer.save()
             return Response(serializer.data,
