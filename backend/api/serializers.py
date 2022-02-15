@@ -103,22 +103,17 @@ class CreateRecipeSerializer(serializers.ModelSerializer):
         )
 
     def validate(self, data):
-        ingredients = data['ingredients']
-        cooking_time = data['cooking_time']
-        image = data['image']
-        tags = data['tags']
+        image = data.get('image')
         MAX_IMAGE_SIZE = 12000000
-
         if image.size > MAX_IMAGE_SIZE:
             raise serializers.ValidationError({
                 'image': 'Слишком большой размер файла!',
             })
-
+        ingredients = self.initial_data.get('ingredients')
         if not ingredients:
             raise serializers.ValidationError({
                 'ingredients': 'Выберите как минимум один ингредиент!',
             })
-
         ingredient_list = []
         for ingredient in ingredients:
             ingredient_id = ingredient['id']
@@ -132,6 +127,7 @@ class CreateRecipeSerializer(serializers.ModelSerializer):
                 raise serializers.ValidationError({
                     'amount': 'Введите необходимое кол-во ингредиента!',
                 })
+        tags = self.initial_data.get('tags')
         if not tags:
             raise serializers.ValidationError({
                 'tags': 'Добавьте как минимум один тэг',
@@ -143,17 +139,18 @@ class CreateRecipeSerializer(serializers.ModelSerializer):
                     'tags': 'Тэг уже был добавлен!'
                 })
             tags_list.append(tag_temp)
+        cooking_time = self.initial_data.get('cooking_time')
         if int(cooking_time) <= 0:
             raise serializers.ValidationError({
                 'cooking_time': 'Введите время приготовление отличное от нуля!'
             })
         return data
-
+    
     def create_ingredients(self, ingredients, recipe):
         for ingredient in ingredients:
             ingredient_id = ingredient['id']
             amount = ingredient['amount']
-            ingredient = Ingredient.objects.get(id=ingredient_id)
+            ingredient = Ingredient.objects.get(name=ingredient_id)
             NumberOfIngredients.objects.create(
                 recipe=recipe,
                 ingredient=ingredient,
@@ -172,6 +169,7 @@ class CreateRecipeSerializer(serializers.ModelSerializer):
                                        **validated_data)
         self.create_tags(tags_id, recipe)
         self.create_ingredients(ingredients, recipe)
+        print(recipe)
         return recipe
 
     def to_representation(self, instance):
