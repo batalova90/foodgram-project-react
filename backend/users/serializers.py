@@ -92,8 +92,8 @@ class CreateFollowSerializer(serializers.ModelSerializer):
         fields = ('user', 'author')
 
     def validate(self, data):
-        user = data['user']
-        following = data['author']
+        user = data['user'].id
+        following = data['author'].id
         if user == following:
             raise serializers.ValidationError(
                     'На самого себя нельзя подписываться!')
@@ -107,7 +107,7 @@ class CreateFollowSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         request = self.context.get('request')
         instance_user = get_object_or_404(User,
-                                          pk=instance).id
+                                          pk=instance)
         return ShowFollowSerializer(instance_user,
                                     context={'request': request}).data
 
@@ -122,14 +122,14 @@ class ShowFollowSerializer(serializers.ModelSerializer):
         fields = UserSerializer.Meta.fields + ('recipes', 'recipe_count')
 
     def get_recipes(self, obj):
-        recipes = Recipe.objects.filter(author__id=obj)
+        recipes = Recipe.objects.filter(author=obj)
         return RecipeShoppingCartSerializer(recipes, many=True).data
 
     def get_recipe_count(self, obj):
-        queryset = Recipe.objects.filter(author__id=obj)
+        queryset = Recipe.objects.filter(author=obj)
         return queryset.count()
 
     def get_is_subscribed(self, obj):
         user = self.context['request'].user
-        return Follow.objects.filter(author__id=obj,
-                                     user__id=user).exists()
+        return Follow.objects.filter(author=obj,
+                                     user=user).exists()
