@@ -34,9 +34,11 @@ class UserViewSet(DjoserUserViewSet):
                                              context=context)
         return self.get_paginated_response(serializer.data)
 
-    @action(detail=True, methods=['post', 'delete'],
+    @action(detail=False, methods=['post', 'delete'],
             permission_classes=[IsAuthenticated])
     def subscribe(self, request, pk=None):
+        print(pk)
+        print('!!!!!!!!!!!!!!!!!!!')
         following = get_object_or_404(User, pk=pk)
         follower = request.user
         data = {'user': follower,
