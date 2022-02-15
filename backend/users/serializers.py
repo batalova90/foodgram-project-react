@@ -31,11 +31,12 @@ class UserSerializer(DjoserUserSerializer):
             'is_subscribed',
         )
 
-    def get_is_subscribed(self, user):
-        author = self.context['request'].user
-        if author.is_anonymous:
+    def get_is_subscribed(self, author):
+        user = self.context['request'].user
+        if user.is_anonymous:
             return False
-        return Follow.objects.filter(user=user, author=author).exists()
+        return Follow.objects.filter(user__id=user.id,
+                                     author__id=author.id).exists()
 
 
 class UserCreateSerializer(DjoserUserCreateSerializer):
