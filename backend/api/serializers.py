@@ -101,24 +101,24 @@ class CreateRecipeSerializer(serializers.ModelSerializer):
             'id', 'author', 'ingredients', 'tags',
             'image', 'name', 'text', 'cooking_time'
         )
-    
+
     def validate_image(self, data):
         ingredients = data['ingredients']
         cooking_time = data['cooking_time']
         image = data['image']
         tags = data['tags']
         MAX_IMAGE_SIZE = 12000000
-        
+
         if image.size > MAX_IMAGE_SIZE:
             raise serializers.ValidationError({
                 'image': 'Слишком большой размер файла!',
             })
-        
+
         if not ingredients:
             raise serializers.ValidationError({
                 'ingredients': 'Выберите как минимум один ингредиент!',
             })
-        
+
         ingredient_list = []
         for ingredient in ingredients:
             ingredient_id = ingredient['id']
