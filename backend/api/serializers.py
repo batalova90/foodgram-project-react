@@ -176,7 +176,6 @@ class CreateRecipeSerializer(serializers.ModelSerializer):
                                        **validated_data)
         self.create_tags(tags_id, recipe)
         self.create_ingredients(ingredients, recipe)
-
         return recipe
 
     def to_representation(self, instance):
