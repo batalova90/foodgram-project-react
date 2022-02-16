@@ -105,7 +105,7 @@ class CreateRecipeSerializer(serializers.ModelSerializer):
     def validate(self, data):
         image = data.get('image')
         MAX_IMAGE_SIZE = 12000000
-        if image.size > MAX_IMAGE_SIZE:
+        if image is not None and image.size > MAX_IMAGE_SIZE:
             raise serializers.ValidationError({
                 'image': 'Слишком большой размер файла!',
             })
