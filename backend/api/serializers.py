@@ -111,16 +111,16 @@ class CreateRecipeSerializer(serializers.ModelSerializer):
             })
         ingredients = self.initial_data.get('ingredients')
         if not ingredients:
-            raise serializers.ValidationError({
-                'ingredients': 'Выберите как минимум один ингредиент!',
-            })
+            raise serializers.ValidationError(
+                'Выберите как минимум один ингредиент!',
+            )
         ingredient_list = []
         for ingredient in ingredients:
             ingredient_id = ingredient['id']
             if ingredient_id in ingredient_list:
-                raise serializers.ValidationError({
-                    'ingredients': 'Ингредиент уже был добавлен!',
-                })
+                raise serializers.ValidationError(
+                    'Ингредиент уже был добавлен!',
+                )
             ingredient_list.append(ingredient_id)
             amount = ingredient['amount']
             if int(amount) <= 0:
