@@ -27,11 +27,12 @@ class RecipeFilter(r_f.FilterSet):
             return queryset
         return Recipe.objects.all()
 
-    def filter_favorited(self, queryset, name, value):
+    def filter_favorited(self, value):
         if value:
-            return queryset.favorites(
-                recipe__user__id=self.request.user.id
+            queryset = Recipe.favorites.filter(
+                user__id=self.request.user.id
             )
+            return queryset
         return Recipe.objects.all()
 
     class Meta:
