@@ -21,8 +21,8 @@ class RecipeFilter(r_f.FilterSet):
 
     def filter_shopping_cart(self, value):
         if value:
-            queryset = queryset.filter(
-                shopping_cart__user=self.request.user
+            queryset = Recipe.shopping_cart.filter(
+                user__id=self.request.user.id
             )
             return queryset
         return Recipe.objects.all()
